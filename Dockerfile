@@ -1,17 +1,15 @@
-# Use an official Node or Bun image (if you're using Bun)
-FROM node:18-alpine  # or `FROM jarredsumner/bun:latest` if you're using Bun
+# Use the official Node.js image as the base image
+FROM node:14
 
-# Set working directory
-WORKDIR /app
+# Set the working directory in the container
+WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json to install dependencies
-COPY package.json ./
-COPY package-lock.json ./
+# Copy package.json and package-lock.json to the working directory
+COPY package*.json ./
 
-# Install dependencies
-RUN npm install   # Use `bun install` if using Bun
+# Install the application dependencies
+RUN npm install
 
-# Copy the rest of the project files
 COPY . .
 
 # Expose the port your app runs on (typically 3000 for Node apps)
