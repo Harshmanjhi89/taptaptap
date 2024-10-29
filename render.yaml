@@ -1,0 +1,7 @@
+version: 1
+services:
+  - type: web
+    name: circle-tap-game
+    env: static
+    staticSite:
+      directory: .
