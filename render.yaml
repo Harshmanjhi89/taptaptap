@@ -1,7 +1,6 @@
-version: 1
 services:
   - type: web
-    name: circle-tap-game
-    env: static
-    staticSite:
-      directory: .
+    name: your-project-name
+    env: bun
+    buildCommand: "bun install"  # Install dependencies with Bun
+    startCommand: "bun run start"  # Adjust if your start command is different
