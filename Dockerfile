@@ -18,4 +18,4 @@ COPY . .
 EXPOSE 3000
 
 # Define the command to start the app
-CMD ["npm", "start"]  # or `CMD ["bun", "run", "start"]` if using Bun
+CMD ["node", "index.js"]
