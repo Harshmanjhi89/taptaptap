@@ -366,7 +366,7 @@ var circlesEngine = {
 // ---------------------- Game Engine Object ---------------------- //
 var gameEngine = { 
   // Current level settings
-  levelNum:1, // current level number
+  levelNum: 1, // current level number
   levelTime: 10, // Time in seconds for the current level
   tapNum: 0, // how many times it was tapped so far
   tapsGoal: 10, // Number of taps required to finish the level
@@ -376,26 +376,62 @@ var gameEngine = {
   evilCirclesCount: 4,
   highestScore: 0,
   bonusScore: 0,
-  updateScore: function(amount) { //add amount to score
-    gameEngine.score = amount;
+
+  sendScoreToServer: function(score) {
+    // Get userId and chatId from Telegram WebApp
+    const userId = Telegram.WebApp.initDataUnsafe.user.id;
+    const chatId = Telegram.WebApp.initDataUnsafe.user.chat_id; // Update if you have chat ID
+    
+    fetch('https://score-r55o.onrender.com/saveScore', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        chatId: chatId,
+        userId: userId,
+        score: score,
+      }),
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('Score sent successfully:', data);
+    })
+    .catch((error) => {
+      console.error('Error sending score:', error);
+    });
+  },
+
+  updateScore: function(amount) { // add amount to score
+    gameEngine.score += amount; // Accumulate score
     gmStatsScore.innerHTML = gameEngine.score;
   },
+
   updateLevel: function(levelNum) { // Update the level number in the game space and add to engine
     gameEngine.levelNum = levelNum;
     gmStatsLvlNumb.innerHTML = "Level " + gameEngine.levelNum;
   },
-  updateTapCount: function(tapNum, tapsGoal) { // Update tabs count in the game space & add to engine
+
+  updateTapCount: function(tapNum, tapsGoal) { // Update taps count in the game space & add to engine
     gameEngine.tapNum = tapNum;
     gmStatsCurrentTapCount.innerHTML = gameEngine.tapNum;
     gameEngine.tapsGoal = tapsGoal;
     gmStatsTotalTapCount.innerHTML = "/" + gameEngine.tapsGoal;
   },
+
   updateLevelTime: function(time) {
     gameEngine.levelTime = time;
   },
+
   updateBonusScore: function(bonus) {
     gameEngine.bonusScore = bonus;
   },
+
   reset: function() { // reset the level values from the levels engine to start a new game
     levelsEngine.resetLevels();
     gameEngine.updateScore(0);
@@ -406,8 +442,9 @@ var gameEngine = {
     gameEngine.goodCirclesCount = levelsEngine.levels[0].goodCirclesCount;
     gameEngine.evilCirclesCount = levelsEngine.levels[0].evilCirclesCount;
   },
+
   start: function(score, level, time, tapsGoal, tapValue, goodCirclesCount, evilCirclesCount) {
-    // Inatial level setup & adding data to the game engine
+    // Initial level setup & adding data to the game engine
     gameEngine.updateScore(score);
     gameEngine.updateLevel(level);
     gameEngine.updateLevelTime(time);
@@ -416,35 +453,38 @@ var gameEngine = {
     gameEngine.goodCirclesCount = goodCirclesCount;
     gameEngine.evilCirclesCount = evilCirclesCount;
 
-    // adding circles to the game space
+    // Adding circles to the game space
     circlesEngine.add('.good-circle', goodCirclesCount);
     circlesEngine.add('.evil-circle', evilCirclesCount);
 
-    // reset the time and start it
+    // Reset the time and start it
     timeEngine.reset();
     timeEngine.start(time);
 
     console.log('Game Started! 🏁');
   },
+
   startLevel: function() { // start level using the current level value in the game engine
     gameEngine.start(
-      gameEngine.score, //score
-      levelsEngine.levels[gameEngine.levelNum-1].levelNum, // level
-      levelsEngine.levels[gameEngine.levelNum-1].time, // time
-      levelsEngine.levels[gameEngine.levelNum-1].tapsGoal, // taps goal
-      levelsEngine.levels[gameEngine.levelNum-1].tapValue, // tap value
-      levelsEngine.levels[gameEngine.levelNum-1].goodCirclesCount, // good circles count
-      levelsEngine.levels[gameEngine.levelNum-1].evilCirclesCount // evil cirlcs count
+      gameEngine.score, // score
+      levelsEngine.levels[gameEngine.levelNum - 1].levelNum, // level
+      levelsEngine.levels[gameEngine.levelNum - 1].time, // time
+      levelsEngine.levels[gameEngine.levelNum - 1].tapsGoal, // taps goal
+      levelsEngine.levels[gameEngine.levelNum - 1].tapValue, // tap value
+      levelsEngine.levels[gameEngine.levelNum - 1].goodCirclesCount, // good circles count
+      levelsEngine.levels[gameEngine.levelNum - 1].evilCirclesCount // evil circles count
     );
   },
+
   checkTapsCount: function() {
     if (gameEngine.tapNum >= gameEngine.tapsGoal) {
-      if (timeEngine.timeLeft > 0) { // if the there was some time left, add to the score * 10 (example: 2second * 10 = 20 added)
+      if (timeEngine.timeLeft > 0) { // if there was some time left, add to the score * 10 (example: 2 seconds * 10 = 20 added)
         gameEngine.showBonusScore();
       }
       gameEngine.levelPassed();
     }
   },
+
   goodCircleTap: function() {
     gameEngine.tapNum = gameEngine.tapNum + 1;
     gameEngine.updateScore(gameEngine.score + gameEngine.tapValue);
@@ -454,30 +494,39 @@ var gameEngine = {
     audioPool.playSound(touchBlue);
     // ga('send', 'event', 'Circle_Tap', 'Good'); // Google analytics events
   },
+
   evilCircleTap: function() {
     gameEngine.deadlyTap();
     audioPool.playSound(touchRed);
     // ga('send', 'event', 'Circle_Tap', 'Evil'); // Google analytics events
   },
+
   pause: function() {
     timeEngine.stop();
   },
+
   resume: function() {
     timeEngine.resume();
   },
+
   stop: function() { // stop the game and reset level values
     timeEngine.stop();
     console.log('game STOPPED!');
     gameEngine.reset();
   },
+
   gameLost: function() {
     audioPool.playSound(levelLost);
     lvlLostScore.innerHTML = gameEngine.score;
+    
+    // Send score to the server
+    this.sendScoreToServer(gameEngine.score);
+    
     toolsBox.hidePage(pagePlayArea);
     toolsBox.showPage(pageYouLost);
     gameEngine.stop();
-
   },
+
   deadlyTap: function() { // tapping a red circle
     console.log('You lost! 🐜');
     lvlLostTtl.innerHTML = "You Lost";
@@ -487,15 +536,21 @@ var gameEngine = {
     }
     gameEngine.gameLost();
   },
+
   timesUp: function() {
     console.log('time is up! ⏱');
     lvlLostTtl.innerHTML = "Time's Up";
+    
+    // Send score to the server
+    this.sendScoreToServer(gameEngine.score);
+    
     if (lvlLostIcon.classList.contains('you-lost-icon')) {
       lvlLostIcon.classList.remove('you-lost-icon');
       lvlLostIcon.classList.add('times-up-icon');
     }
     gameEngine.gameLost();
   },
+
   levelPassed: function() {
     console.log('Level passed! 💃');
     audioPool.playSound(levelPassed);
@@ -524,6 +579,7 @@ var gameEngine = {
     toolsBox.hidePage(pagePlayArea);
     toolsBox.showPage(pageLevelPassed);
   },
+
   showBonusScore: function() {
     console.log('You got '
     + Math.round(timeEngine.timeLeft) * 10
@@ -531,7 +587,7 @@ var gameEngine = {
     + timeEngine.timeLeft
     + " seconds before the time!" );
     gameEngine.updateBonusScore(Math.round(timeEngine.timeLeft, 10) * 10);
-    if (gameEngine.bonusScore > 0) { // if theere is some bonus score show it on level passed page
+    if (gameEngine.bonusScore > 0) { // if there is some bonus score show it on level passed page
       lvlPssdBonusScore.innerHTML = "Bonus +" + gameEngine.bonusScore;
     }
     gameEngine.score += gameEngine.bonusScore; // add the bonus score to the game score
