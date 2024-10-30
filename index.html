@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>TapTapTap - Open source tapping game built with Javascript</title>
-    <meta name="description" content="Open source tapping game built with Javascript" />
+    <title>TapTapTap - Tapping Game</title>
+    <meta name="description" content="A fun tapping game built with Javascript" />
 
     <link rel="stylesheet" href="style/main.css">
     <link href="https://fonts.googleapis.com/css?family=Titillium+Web:300,400,600,700" rel="stylesheet">
@@ -23,56 +23,44 @@
 
     <!-- OG Details -->
     <meta property="og:title" content="TapTapTap" />
-    <meta property="og:description" content="Open source tapping game built with Javascript" />
-    <meta property="og:site_name" content="TapTapTap - Open source tapping game built with Javascript" />
+    <meta property="og:description" content="A fun tapping game built with Javascript" />
+    <meta property="og:site_name" content="TapTapTap - Tapping Game" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://taptaptap.click/" />
     <meta property="og:image" content="https://taptaptap.click/images/im-og_image.png" />
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-3416596-20"></script>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
+
         gtag('config', 'UA-3416596-20');
-    </script>
-
-    <script>
-        // Function to load the game content
-        function loadGame() {
-            // Fetch the game HTML content
-            fetch('play/index.html')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.text();
-                })
-                .then(html => {
-                    // Replace the body content with the game HTML
-                    document.body.innerHTML = html;
-                })
-                .catch(error => {
-                    console.error('There was a problem with the fetch operation:', error);
-                });
-        }
-
-        // Load the game when the page is loaded
-        window.onload = function() {
-            loadGame();
-            // Change the URL to #
-            history.pushState(null, null, '#');
-        };
     </script>
 </head>
 
 <body>
-    <div style="text-align:center; margin-top:20%;">
-        <h2>Redirecting to the game...</h2>
-        <p>If you are not redirected, <a href="play/game.html">click here</a>.</p>
+    <div class="section-container section-home">
+        <div class="section-wrapper home-section-wrapper">
+            <div class="logo-container">
+                <div class="logo"></div>
+                <div class="pulsing-circle"></div>
+            </div>
+            <h2 class="home-subtitle">TapTapTap - A Fun Tapping Game</h2>
+            <div class="btns-container">
+                <a class="btn btn-pink" href="play/">Play</a>
+                <a class="btn btn-outline" href="https://github.com/MahdiF/taptaptap">View on GitHub</a>
+            </div>
+            <div class="screenshots-container">
+                <div class="desktop-screenshot">
+                    <div class="mobile-screenshot"></div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <!-- Removed the About and Credits sections for simplicity -->
 </body>
 
 </html>
