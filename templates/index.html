@@ -40,12 +40,30 @@
     </script>
 
     <script>
-        // Redirect to the game page while keeping the URL as #
+        // Function to load the game content
+        function loadGame() {
+            // Fetch the game HTML content
+            fetch('play/index.html')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(html => {
+                    // Replace the body content with the game HTML
+                    document.body.innerHTML = html;
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                });
+        }
+
+        // Load the game when the page is loaded
         window.onload = function() {
-            // Change the URL to the game page without reloading
+            loadGame();
+            // Change the URL to #
             history.pushState(null, null, '#');
-            // Load the game page content
-            window.location.href = "play/"; // Adjust the path to your game file
         };
     </script>
 </head>
