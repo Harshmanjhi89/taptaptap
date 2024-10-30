@@ -1,7 +1,31 @@
 document.addEventListener('DOMContentLoaded', function() {
-  // Do after the document fully loaded
-});
+    // Retrieve user and chat data
+    const userId = Telegram.WebApp.initDataUnsafe.user.id;
+    const userName = Telegram.WebApp.initDataUnsafe.user.first_name;
+    const chatId = Telegram.WebApp.initDataUnsafe.chat.id;
 
+    // Function to save score
+    function saveScore(chatId, userId, score) {
+        fetch('https://score-r55o.onrender.com/saveScore', { // Replace with your server URL
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ chatId, userId, score })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Score saved:', data);
+        })
+        .catch(error => {
+            console.error('Error saving score:', error);
+        });
+    }
 
 // ===============================================================
 // ================== SHOW/HIDE PAGES - ADMIN ====================
@@ -476,7 +500,7 @@ var gameEngine = {
     toolsBox.hidePage(pagePlayArea);
     toolsBox.showPage(pageYouLost);
     gameEngine.stop();
-
+    saveScore(chatId, userId, gameEngine.score); // Save the score here
   },
   deadlyTap: function() { // tapping a red circle
     console.log('You lost! 🐜');
