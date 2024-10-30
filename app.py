@@ -7,8 +7,8 @@ app = Flask(__name__)
 def index():
     return send_file('index.html')
 
-@app.route('play/')
-def index():
+@app.route('/play')  # Make sure this starts with a slash
+def play():
     return send_from_directory('play', 'index.html')
 
 
