@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>TapTapTap - Tapping Game</title>
+    <title>Redirecting to TapTapTap Game</title>
+    <meta http-equiv="refresh" content="0; url=/play/"> <!-- Redirects immediately to the game -->
     <meta name="description" content="A fun tapping game built with Javascript" />
 
     <link rel="stylesheet" href="style/main.css">
@@ -41,26 +42,11 @@
 </head>
 
 <body>
-    <div class="section-container section-home">
-        <div class="section-wrapper home-section-wrapper">
-            <div class="logo-container">
-                <div class="logo"></div>
-                <div class="pulsing-circle"></div>
-            </div>
-            <h2 class="home-subtitle">TapTapTap - A Fun Tapping Game</h2>
-            <div class="btns-container">
-                <a class="btn btn-pink" href="/play/">Play</a> <!-- Ensure this points directly to the game -->
-                <a class="btn btn-outline" href="https://github.com/MahdiF/taptaptap">View on GitHub</a>
-            </div>
-            <div class="screenshots-container">
-                <div class="desktop-screenshot">
-                    <div class="mobile-screenshot"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Removed the About and Credits sections for simplicity -->
+    <!-- Optionally, you can add a message for users who do not support redirection -->
+    <noscript>
+        <meta http-equiv="refresh" content="0; url=/play/">
+        <p>If you are not redirected, <a href="/play/">click here to play the game</a>.</p>
+    </noscript>
 </body>
 
 </html>
