@@ -3,15 +3,13 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>TapTapTap - Open source tapping game built with Javascript</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tap Tap Tap - Open Source Tapping Game</title>
     <meta name="description" content="Open source tapping game built with Javascript" />
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600" rel="stylesheet">
 
-    <link rel="stylesheet" href="style/main.css">
-    <link href="https://fonts.googleapis.com/css?family=Titillium+Web:300,400,600,700" rel="stylesheet">
-
-    <!-- favicon -->
+    <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
     <link rel="icon" type="image/png" href="/favicons/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="/favicons/favicon-16x16.png" sizes="16x16">
@@ -31,28 +29,25 @@
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-3416596-20"></script>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
-
         gtag('config', 'UA-3416596-20');
-    </script>
-
-    <script>
-        // Redirect to the home page with a hash after a short delay
-        setTimeout(function() {
-            window.location.href = "#"; // Redirect to the hash link
-        }, 3000); // Redirect after 3 seconds
     </script>
 </head>
 
 <body>
     <div style="text-align:center; margin-top:20%;">
-        <h2>Redirecting...</h2>
-        <p>If you are not redirected, <a href="play/">click here to play</a>.</p>
+        <h1>Welcome to Tap Tap Tap!</h1>
+        <p>An open-source tapping game built with JavaScript.</p>
+        <p>Click the button below to start playing!</p>
+        <a href="play/" class="start-button" style="padding: 10px 20px; font-size: 20px; background-color: #0b1d31; color: white; text-decoration: none; border-radius: 5px;">Play Now</a>
     </div>
+
+    <footer style="text-align:center; margin-top: 50px;">
+        <p>&copy; 2023 Tap Tap Tap. All rights reserved.</p>
+    </footer>
 </body>
 
 </html>
