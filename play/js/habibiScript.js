@@ -500,7 +500,6 @@ var gameEngine = {
     toolsBox.hidePage(pagePlayArea);
     toolsBox.showPage(pageYouLost);
     gameEngine.stop();
-    saveScore(chatId, userId, gameEngine.score); // Save the score here
   },
   deadlyTap: function() { // tapping a red circle
     console.log('You lost! 🐜');
@@ -535,6 +534,8 @@ var gameEngine = {
 
     gameEngine.updateLevel(gameEngine.levelNum + 1); // Update level number in the game engine
 
+    saveScore(chatId, userId, gameEngine.score);
+      
     // Add new level
     levelsEngine.addNewLevel( // add new level to the levels engine
       gameEngine.levelNum,
